@@ -21,6 +21,7 @@ class App extends Component {
     }
     htmlElementsToState(){
         get("/api/data").then((data)=>{
+            console.log(data);
             this.setState({
                 content: data.data
             })
@@ -34,7 +35,7 @@ class App extends Component {
                     <SideBar content={content}/>
                     <Container>
                         {   
-                            map(content.titles,(title)=> <Title> {{ title }} </Title> )    
+                            map(content.titles,(title)=> <Title> { title } </Title> )    
                         }
                     </Container>
                 </div>
@@ -42,7 +43,7 @@ class App extends Component {
         }else{
             return(
                 <div>
-                loading
+                    loading
                 </div>
             );
         }
