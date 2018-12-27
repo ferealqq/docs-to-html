@@ -9,7 +9,7 @@ export let Title = (props) => (
 
 export let SubTitle = (props) => (
 	<p className="subtitle">
-
+		{ props.children }
 	</p>
 );
 

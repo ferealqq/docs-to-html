@@ -3,86 +3,49 @@ import logo from './logo.svg';
 import './App.css';
 import { map } from 'lodash';
 import SideBar from './SideBar';
-import { TitleContainer,SubTitleContainer } from './ElemUtil';
+import { Title,SubTitle } from './ElemUtil';
 import { Container,Row,Col } from 'reactstrap';
+import { get } from 'axios';
 
 class App extends Component {
     state = {
-        titles: [
-            { 
-                title: "Why",
-                elements: [
-                    {
-                        subtitle: "Price is too high because x and y",
-                        element: <Text />,
-                    }, {
-                        subtitle: "sombody once told me that the world is gonna roll me",
-                        element: <h4> h3333 </h4>,
-                    }
-                ]                
-            },   
-            {
-                title: "Production problems",
-                elements: [
-                    {
-                        subtitle: "Price is too high because x and y",
-                        element: <Text />,
-                    }, {
-                        subtitle: "sombody once told me that the world is gonna roll me",
-                        element: <h4> h3333 </h4>,
-                    }                    
-                ]
-            },
-            {
-                title: "The stock price is too high",
-                elements: [
-                    {
-                        subtitle: "Price is too high because x and y",
-                        element: <Text />,
-                    }, {
-                        subtitle: "sombody once told me that the world is gonna roll me",
-                        element: <h4> h3333 </h4>,
-                    }
-                ]
-            }
-        ],
+        content:undefined,
+        htmlFileName: "proto.html",
+    };
+    constructor(props){
+        super(props);
+        this.htmlElementsToState = this.htmlElementsToState.bind(this);
     }
-    mapSubTitles(subtitles){
-        return map(subtitles,(subtitle) => 
-            <SubTitleContainer key={subtitle} subtitle={subtitle}/>
-        );        
+    componentDidMount(){
+        this.htmlElementsToState();
     }
-    mapElements(titles){
-        return map(titles,(title)=>{
-            return(
-                <div>
-                    <TitleContainer title={title}/>
-
-                </div>
-            );
-        })        
+    htmlElementsToState(){
+        get("/api/data").then((data)=>{
+            this.setState({
+                content: data.data
+            })
+        });
     }
     render() {
-        let { titles } = this.state;
-        let elems = this.mapElements(titles);
-        console.log(elems);
-        return (
-            <div>
-                <SideBar titles={titles} />
-                <Container>
-                    { 
-                        map({t:"moi",t:"moi",t:"moi"},(jotain)=><p> {jotain.t} </p>)
-                    }
-                </Container>
-            </div>
-        );
+        let { content } = this.state;
+        if(content !== undefined){
+            return (
+                <div>
+                    <SideBar content={content}/>
+                    <Container>
+                        {   
+                            map(content.titles,(title)=> <Title> {{ title }} </Title> )    
+                        }
+                    </Container>
+                </div>
+            );
+        }else{
+            return(
+                <div>
+                loading
+                </div>
+            );
+        }
     }
 }
-let Text = () => (
-    <div>
-        <p>
-            olerm dipsum lipsum, olerm dipsum lipsum,  hurray! 
-        </p>
-    </div>
-);
 export default App;

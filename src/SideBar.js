@@ -22,11 +22,11 @@ class SideBar extends Component{
     }
 
     render(){
-        let { titles } = this.props;
+        let { content } = this.props;
         return(
             <Nav className="flex-column w-25 h-100 mh-100" pills={true} fill={true} vertical>
                 { 
-                    map(titles,(title)=>{
+                    map(content.titles,(title)=>{
                         return <NavTitle key={title.title} title={title.title}/>
                     })
                 }
